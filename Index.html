@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LINAMANDLA // CYBERSECURITY ARCHITECT</title>
+    <style>
+        /* -------------------------------------------------------------
+           1. FONT DEFINITIONS & MONOCHROME TOKENS
+        ------------------------------------------------------------- */
+        @font-face {
+            font-family: 'Basote';
+            src: url('fonts/Basote.woff2') format('woff2'),
+                 url('fonts/Basote.ttf') format('truetype');
+            font-weight: bold;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Poppins';
+            src: url('fonts/Poppins-Regular.woff2') format('woff2'),
+                 url('fonts/Poppins-Regular.ttf') format('truetype');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        :root {
+            --bg-pure: #000000;
+            --border-stark: rgba(255, 255, 255, 0.15);
+            --border-dim: rgba(255, 255, 255, 0.08);
+            --text-pure: #ffffff;
+            --text-muted: #888888;
+            
+            --font-display: 'Basote', sans-serif;
+            --font-body: 'Poppins', sans-serif;
+            --font-mono: Consolas, 'Courier New', monospace;
+        }
+
+        /* -------------------------------------------------------------
+           2. GLOBAL MATRIX RESET
+        ------------------------------------------------------------- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-pure);
+            color: var(--text-pure);
+            font-family: var(--font-body);
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* -------------------------------------------------------------
+           3. STARK NAVIGATION HEADER
+        ------------------------------------------------------------- */
+        .hud-header {
+            width: 100%;
+            height: 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 3rem;
+            border-bottom: 1px solid var(--border-stark);
+            background: var(--bg-pure);
+        }
+
+        .identity-block {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .security-badge-icon {
+            width: 32px;
+            height: 32px;
+            stroke: var(--text-pure);
+            stroke-width: 1.5;
+            fill: none;
+        }
+
+        .name-meta {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .name-meta h2 {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            line-height: 1.1;
+        }
+
+        .name-meta span {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 3rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-pure);
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding-bottom: 0.5rem;
+            transition: opacity 0.2s ease;
+        }
+
+        .nav-links li.active a {
+            border-bottom: 2px solid var(--text-pure);
+        }
+
+        .nav-links a:hover {
+            opacity: 0.7;
+        }
+
+        /* -------------------------------------------------------------
+           4. THREE-COLUMN HERO DASHBOARD LAYOUT
+        ------------------------------------------------------------- */
+        .hero-matrix {
+            display: grid;
+            grid-template-columns: 1.2fr 0.9fr 0.9fr;
+            border-bottom: 1px solid var(--border-stark);
+            min-height: calc(100vh - 240px);
+        }
+
+        /* Common cell structure */
+        .matrix-cell {
+            padding: 3.5rem 3rem;
+            border-right: 1px solid var(--border-stark);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .matrix-cell:last-child {
+            border-right: none;
+        }
+
+        /* COLUMN 1: Editorial Text & CTAs */
+        .cell-editorial {
+            justify-content: flex-start;
+            padding-top: 5rem;
+        }
+
+        .kicker-line {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .kicker-line::after {
+            content: '';
+            height: 1px;
+            width: 60px;
+            background: var(--border-stark);
+        }
+
+        .cell-editorial h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 4.5vw, 3.8rem);
+            line-height: 1.1;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 2rem;
+        }
+
+        .cell-editorial p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            max-width: 480px;
+            margin-bottom: 3rem;
+        }
+
+        .action-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-stark {
+            background: transparent;
+            border: 1px solid var(--text-pure);
+            color: var(--text-pure);
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            padding: 1rem 1.75rem;
+            text-transform: uppercase;
+            text-decoration: none;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+
+        .btn-stark:hover {
+            background: var(--text-pure);
+            color: var(--bg-pure);
+        }
+
+        /* COLUMN 2: Telemetry Data Containers */
+        .cell-telemetry {
+            padding: 2rem;
+            justify-content: space-between;
+        }
+
+        .globe-wrapper {
+            width: 100%;
+            height: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-bottom: 1px dashed var(--border-dim);
+            padding-bottom: 1.5rem;
+        }
+
+        /* Aspect ratio container for your 1536x1024 matrix globe asset */
+        .matrix-globe-asset {
+            width: 80%;
+            height: 80%;
+            aspect-ratio: 1536 / 1024;
+            object-fit: contain;
+            opacity: 1;
+        }
+
+        .feed-container {
+            border: px solid var(--border-stark);
+            padding: 1.25rem;
+            margin-top: 1rem;
+        }
+
+        .feed-label {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.75rem;
+        }
+
+        /* Aspect ratio slot for your 2048x1948 graph asset */
+        .telemetry-graph-asset {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 2048 / 1948;
+            object-fit: contain;
+             
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .metric-card {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .metric-card span {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .metric-value-row {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        .metric-number {
+            font-family: var(--font-display);
+            font-size: 1.6rem;
+        }
+
+        /* Sparkline simulation blocks */
+        .mini-bar-chart {
+            display: flex;
+            align-items: flex-end;
+            gap: 2px;
+            height: 16px;
+        }
+        .mini-bar-chart div {
+            width: 2px;
+            background: var(--text-pure);
+        }
+
+        /* COLUMN 3: HUD Node Frame & Silhouette */
+        .cell-profile {
+            align-items: center;
+            justify-content: center;
+            padding: 3rem;
+        }
+
+        .hud-photo-frame {
+            position: relative;
+            width: 115%;
+            max-width: 320px;
+            aspect-ratio: 1 / 1.2;
+            border: 1px solid var(--border-stark);
+            padding: 8px;
+        }
+
+        /* Tactical corner tick marks */
+        
+        .cell-profile {
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+}
+        
+        .hud-photo-frame::before {
+            content: '';
+            position: absolute;
+            top: -5px; left: -5px; width: 15px; height: 15px;
+            border-top: 2px solid var(--text-pure);
+            border-left: 2px solid var(--text-pure);
+        }
+        .hud-photo-frame::after {
+            content: '';
+            position: absolute;
+            bottom: -5px; right: -5px; width: 15px; height: 15px;
+            border-bottom: 2px solid var(--text-pure);
+            border-right: 2px solid var(--text-pure);
+        }
+
+        .photo-slot {
+            width: 100%;
+            height: 100%;
+            background: #0a0a0a;
+            border: 1px solid var(--border-dim);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* Updated rule for when you swap the placeholder SVG for a real <img> tag */
+.photo-slot img {
+    width: 100%;
+    height: 100%;
+    /* 'cover' centers the photo and crops it intelligently to fit the HUD box, 
+       ensuring your face never looks stretched or squished */
+    object-fit: cover; 
+    object-position: center;
+}
+        
+        .photo-placeholder-svg {
+            width: 0%;
+            height: 0%;
+            fill: #060505;
+        }
+
+        .profile-status-tag {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-top: 1.5rem;
+            text-align: center;
+            color: var(--text-muted);
+        }
+
+        /* -------------------------------------------------------------
+           5. CORE DEFENSIVE PILLARS SECTION
+        ------------------------------------------------------------- */
+        .pillars-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            border-bottom: 1px solid var(--border-stark);
+        }
+
+        .pillar-block {
+            padding: 3rem;
+            border-right: 1px solid var(--border-stark);
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+        }
+
+        .pillar-block:last-child {
+            border-right: none;
+        }
+
+        .hex-icon-container {
+            flex-shrink: 0;
+            width: 48px;
+            height: 48px;
+        }
+
+        .hex-svg {
+            width: 100%;
+            height: 100%;
+            stroke: var(--text-pure);
+            stroke-width: 1.2;
+            fill: none;
+        }
+
+        .pillar-content h3 {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .pillar-content p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+        /* -------------------------------------------------------------
+           6. METRIC COUNTERS FOOTER ROWS
+        ------------------------------------------------------------- */
+        .hud-footer {
+            display: grid;
+            grid-template-columns: 1.7fr 1.3fr;
+            min-height: 90px;
+        }
+
+        .footer-counters {
+            display: flex;
+            align-items: center;
+            padding: 0 3rem;
+            gap: 3.5rem;
+            border-right: 1px solid var(--border-stark);
+            overflow-x: auto;
+        }
+
+        .counter-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            white-space: nowrap;
+        }
+
+        .counter-number {
+            font-family: var(--font-display);
+            font-size: 1.7rem;
+        }
+
+        .counter-label {
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            line-height: 1.3;
+        }
+
+        .footer-quote {
+            display: flex;
+            align-items: center;
+            padding: 1.5rem 3rem;
+            font-size: 0.8rem;
+            line-height: 1.5;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        /* -------------------------------------------------------------
+           7. PERSISTENT RESPONSIVE MEDIA BREAKPOINTS
+        ------------------------------------------------------------- */
+        @media (max-width: 1100px) {
+            .hero-matrix {
+                grid-template-columns: 1fr;
+            }
+            .matrix-cell {
+                border-right: none;
+                border-bottom: 1px solid var(--border-stark);
+            }
+            .pillars-section {
+                grid-template-columns: 1fr;
+            }
+            .pillar-block {
+                border-right: none;
+                border-bottom: 1px solid var(--border-stark);
+            }
+            .pillar-block:last-child {
+                border-bottom: none;
+            }
+            .hud-footer {
+                grid-template-columns: 1fr;
+            }
+            .footer-counters {
+                border-right: none;
+                border-bottom: 1px solid var(--border-stark);
+                padding: 2rem 3rem;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .hud-header {
+                flex-direction: column;
+                height: auto;
+                padding: 2rem 1.5rem;
+                gap: 1.5rem;
+            }
+            .nav-links {
+                gap: 1.5rem;
+            }
+            .matrix-cell, .pillar-block, .footer-counters, .footer-quote {
+                padding: 2.5rem 1.5rem;
+            }
+            .action-row {
+                flex-direction: column;
+            }
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Typewriter Cursor Telemetry */
+.hud-cursor {
+    font-weight: 300;
+    color: var(--text-pure);
+    margin-left: 2px;
+    animation: cursor-blink 1s infinite steps(2, start);
+}
+
+@keyframes cursor-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+        
+    </style>
+    
+</head>
+    
+<body>
+
+    <!-- 1. HEADER LOGO & NAVBAR TRACK -->
+    <header class="hud-header">
+        <div class="identity-block">
+            <!-- Precise Vector Shield Lock -->
+            <svg class="security-badge-icon" viewBox="0 0 24 24">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                <rect x="9" y="11" width="6" height="5" rx="1"/>
+                <path d="M10 11V9a2 2 0 0 1 4 0v2" />
+            </svg>
+            <div class="name-meta">
+                <h2>Linamandla</h2>
+                <span>Cybersecurity Analyst</span>
+            </div>
+        </div>
+       <nav>
+            <ul class="nav-links">
+                <li class="active"><a href="index.html">About</a></li>
+                <li><a href="experience.html">Experience</a></li>
+                <li><a href="projects.html">Threats Mitigated</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- 2. TRIPLE PANEL HERO MAIN COMPONENT -->
+    <main class="hero-matrix">
+        
+        <!-- COLUMN A: HEADLINE FOCUS -->
+        <section class="matrix-cell cell-editorial" id="about">
+            <div class="kicker-line">Hello, I'm Linamandla</div>
+          <h1>
+    <span id="typewriter-line-1"></span><br>
+    <span id="typewriter-line-2"></span><span class="hud-cursor">|</span>
+</h1>
+            <p>
+                Cybersecurity Analyst focused on threat detection, active incident response tracking, and transforming chaotic log events into robust, actionable defenses.
+            </p>
+          <div class="action-row">
+    <!-- Links to your projects section lower down on the page -->
+    <a href="https://www.linkedin.com/in/linamandla-thutha-b607182a7/" class="btn-stark">View My Work <span>→</span></a>
+    
+    <!-- Forces an automatic download of the PDF file from your project folder -->
+    <a href="Linamandla_Security_Analyst.pdf" download="Linamandla_Resume.pdf" class="btn-stark">Download Resume <span>↓</span></a>
+</div>
+        </section>
+
+        <!-- COLUMN B: TELEMETRY & IMAGES HOUSING -->
+        <section class="matrix-cell cell-telemetry">
+            <!-- Dynamic Matrix Globe Asset Boundary Container -->
+            <div class="globe-wrapper">
+                <!-- Swappable file path for your 1536*1024 graphic -->
+                <img src="Attack.png" alt="Global Threat Matrix Map" class="matrix-globe-asset">
+            </div>
+
+            <!-- Threat Intel Feed Graphic Boundary Container -->
+            <div class="feed-container">
+                <div class="feed-label">Threat Intelligence Feed</div>
+                <!-- Swappable file path for your 2048*1948 telemetry graphic -->
+                <img src="Chart.png" alt="Active Vector Stream Analytics" class="telemetry-graph-asset">
+            </div>
+
+            <!-- Dynamic Counters Module -->
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <span>Events Analyzed</span>
+                    <div class="metric-value-row">
+                        <div class="metric-number">10k+</div>
+                        <div class="mini-bar-chart">
+                            <div style="height: 60%"></div>
+                            <div style="height: 100%"></div>
+                            <div style="height: 40%"></div>
+                            <div style="height: 85%"></div>
+                            <div style="height: 70%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <span>Threats Blocked</span>
+                    <div class="metric-value-row">
+                        <div class="metric-number">1k+</div>
+                        <div class="mini-bar-chart">
+                            <div style="height: 30%"></div>
+                            <div style="height: 65%"></div>
+                            <div style="height: 90%"></div>
+                            <div style="height: 40%"></div>
+                            <div style="height: 75%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- COLUMN C: HUD PROFILE PHOTO NODE -->
+        <section class="matrix-cell cell-profile">
+            <div class="hud-photo-frame">
+                <div class="photo-slot">
+                 <div class="photo-slot">
+    <img src="BGIMN.png" alt="Linamandla Profile">
+</div>
+                </div>
+            </div>
+            <div class="profile-status-tag">Based in Johannesburg • Available Countrywide</div>
+        </section>
+    </main>
+
+    <!-- 3. THREE BLOCK SPECIALIZATION MODULES -->
+    <section class="pillars-section" id="experience">
+        
+        <!-- Block 1 -->
+        <div class="pillar-block">
+            <div class="hex-icon-container">
+                <svg class="hex-svg" viewBox="0 0 24 24">
+                    <path d="M12 2l9 4.5V16.5L12 22l-9-5.5V6.5z"/>
+                    <circle cx="12" cy="12" r="3"/>
+                </svg>
+            </div>
+            <div class="pillar-content">
+                <h3>Threat Detection</h3>
+                <p>Proactive monitoring and detection of malicious activity across endpoints, networks, and cloud environments.</p>
+            </div>
+        </div>
+
+        <!-- Block 2 -->
+        <div class="pillar-block">
+            <div class="hex-icon-container">
+                <svg class="hex-svg" viewBox="0 0 24 24">
+                    <path d="M12 2l9 4.5V16.5L12 22l-9-5.5V6.5z"/>
+                    <line x1="12" y1="8" x2="12" y2="16"/>
+                    <line x1="8" y1="12" x2="16" y2="12"/>
+                </svg>
+            </div>
+            <div class="pillar-content">
+                <h3>Incident Response</h3>
+                <p>Rapid triage, containment, and eradication of live active security alerts to minimize operational impact.</p>
+            </div>
+        </div>
+
+        <!-- Block 3 -->
+        <div class="pillar-block">
+            <div class="hex-icon-container">
+                <svg class="hex-svg" viewBox="0 0 24 24">
+                    <path d="M12 2l9 4.5V16.5L12 22l-9-5.5V6.5z"/>
+                    <path d="M8 14s1.5-2 4-2 4 2 4 2"/>
+                </svg>
+            </div>
+            <div class="pillar-content">
+                <h3>SIEM Analysis</h3>
+                <p>Deep tactical analysis of logs and raw cluster events using detection query architectures to uncover hidden threat actors.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. FOOTER QUANTITATIVE DATA & QUOTE BLOCK -->
+    <footer class="hud-footer">
+        <div class="footer-counters">
+            <div class="counter-item">
+                <div class="counter-number">10+</div>
+                <div class="counter-label">Tools &<br>Platforms</div>
+            </div>
+            <div class="counter-item">
+                <div class="counter-number">1+</div>
+                <div class="counter-label">Years<br>Experience</div>
+            </div>
+            <div class="counter-item">
+                <div class="counter-number">150+</div>
+                <div class="counter-label">Threats<br>Eradicated</div>
+            </div>
+        </div>
+        <div class="footer-quote">
+            "Security is not a product, but a process. I build, test, and refine defenses every day."
+        </div>
+    </footer>
+    
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+    const line1Element = document.getElementById("typewriter-line-1");
+    const line2Element = document.getElementById("typewriter-line-2");
+    
+    const textLine1 = "THREATS DON'T WAIT.";
+    const textLine2 = "NEITHER DO I.";
+    
+    // Typing speeds (in milliseconds)
+    const typeSpeed = 120;       // Speed of normal keystrokes
+    const sentencePause = 750;  // Realistic pause at the punctuation mark (.)
+
+    let charIndexLine1 = 0;
+    let charIndexLine2 = 0;
+
+    function typeLine1() {
+        if (charIndexLine1 < textLine1.length) {
+            line1Element.textContent += textLine1.charAt(charIndexLine1);
+            charIndexLine1++;
+            setTimeout(typeLine1, typeSpeed);
+        } else {
+            // Line 1 finished. Trigger the deliberate tactical punctuation pause
+            setTimeout(typeLine2, sentencePause);
+        }
+    }
+
+    function typeLine2() {
+        if (charIndexLine2 < textLine2.length) {
+            line2Element.textContent += textLine2.charAt(charIndexLine2);
+            charIndexLine2++;
+            setTimeout(typeLine2, typeSpeed);
+        }
+    }
+
+    // Initialize the telemetry sequence
+    setTimeout(typeLine1, 300);
+});
+    </script>
+</body>
+</html>
